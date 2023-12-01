@@ -1,14 +1,14 @@
-from peewee import *
+from peewee import Model, CharField, IntegerField, TextField, DateTimeField, ForeignKeyField
 import datetime
 from flask_login import UserMixin
-from peewee import BlobField
+from peewee import MySQLDatabase
 
-db = PostgresqlDatabase(
+db = MySQLDatabase(
     'notes_app',
-    host = 'localhost',
-    port = '5432',
-    user = 'notes',
-    password = 'qwe123'
+    host='localhost',
+    port=3306,  # Default MySQL port
+    user='notes',
+    password='qwe123'
 )
 
 class BaseModel(Model):
