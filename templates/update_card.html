@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Notes App - Update Card</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events:none;
+            display: flex;  
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wrapper {
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        .card {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input, textarea {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007BFF;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <div class="wrapper">
+        <div class="card">
+            <h1>Update Card</h1>
+            
+            <!-- Form for updating the card -->
+            <form action="{{ url_for('update_card', card_id=card.id) }}" method="post">
+                <input type="text" name="title" placeholder="New Title" required value="{{ card.title }}">
+                <textarea name="description" placeholder="New Description" required>{{ card.description }}</textarea>
+                <button type="submit">Update Card</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

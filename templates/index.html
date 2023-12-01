@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Notes App</title>
+    <style>
+        body {
+            background-image: url('https://i.pinimg.com/originals/93/d3/95/93d3956b46efa2e0c30c95ebb1537637.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .header h1 {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        .note-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .note {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            transition: all 0.3s ease;
+            height: 100%;
+            overflow-wrap: break-word; /* This line prevents text from spilling out of note */
+        }
+        .note:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        .yellow {
+            background-color: #fde74c;
+        }
+        .lightblue {
+            background-color: #5bc0be;
+        }
+        .pink {
+            background-color: #f4a7b9;
+        }
+        .logout {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            background: none;
+            border: none;
+        }
+        .search-container {
+            position: fixed;
+            top: 10px;
+            right: 100px;
+        }
+        .search-input, .search-button {
+            padding: 7px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .search-button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .note p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .action-button {
+            flex: 1;
+            margin: 0 5px;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+        .action-button.update-button {
+            background-color: #28a745; /* Make the Update button green */
+        }
+        .action-button.delete-button {
+            background-color: #dc3545;
+        }
+        .note-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .go-new-version {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Notes App</h1>
+            <h3>Create a new note:</h3>
+            <form action="/add_note" method="post">
+                <input type="text" name="note_text" placeholder="Take a note..." style="width: 70%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                <select name="note_color" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <option value="yellow">Yellow</option>
+                    <option value="lightblue">Light Blue</option>
+                    <option value="pink">Pink</option>
+                </select>
+                <button type="submit" style="padding: 10px 20px; border: none; background-color: #4CAF50; color: white; border-radius: 5px; cursor: pointer;">Add</button>
+            </form>    
+        </div>
+
+        <form action="/search" method="GET" class="search-container">
+            <input type="text" name="search_text" placeholder="Search notes..." class="search-input">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        <button type="submit" class="logout" onclick="location.href='{{ url_for('logout') }}'">Logout</button>
+    
+        <div class="note-container">
+            {% for note in notes %}
+            <div class="note {{ note.note_color }}">
+                <div>
+                    <p class='text'>{{ note.note_text }}</p>
+                </div>
+                <div class="note-footer">
+                    <div class="action-buttons">
+                        <a class="action-button update-button" href="{{ url_for('update_note', note_id=note.id) }}">Update</a>
+                        <form action="/delete_note/{{ note.id }}"  method="post" style="flex: 1;">
+                            <button class="action-button delete-button" type="submit">Delete</button>
+                        </form>
+                    </div>
+                    <p class='date'>Created on: {{ note.created_date.strftime('%Y-%m-%d') }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="go-new-version" onclick="window.location.href='/forcards'">Go New Version</button>
+    </div>
+</body>
+</html>

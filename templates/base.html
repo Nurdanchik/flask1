@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sticky Notes App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-image: url('https://i.pinimg.com/originals/b5/01/3d/b5013de0baec1cb12e8e6975fa7b5eb2.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        
+
+        .header {
+            background-color: #f2f2f2;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header h1 {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .header ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .header ul li {
+            margin: 0 10px;
+        }
+
+        .header ul li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .header ul li a:hover {
+            text-decoration: underline;
+        }
+        
+    </style>
+</head>
+<body class='bg'>
+    <div class="header">
+        <h1>Sticky Notes App</h1>
+        <ul>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% block content %}{% endblock %}
+</body>
+</html>
+

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Notes App</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #eee;
+            background-image: url("https://images7.alphacoders.com/938/thumb-1920-938300.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .overlay {
+            background-color: rgba(255, 255, 255, 0.4);
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            pointer-events:none;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            font-size: 1.5em;
+            z-index: 1000;
+        }
+
+        .card {
+            backdrop-filter: blur(5px);
+            min-width: 35vh;
+            height: 55vh;
+            box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.051),
+            0px 0px 7.2px rgba(0, 0, 0, 0.073), 0px 0px 13.6px rgba(0, 0, 0, 0.09),
+            0px 0px 24.3px rgba(0, 0, 0, 0.107), 0px 0px 45.5px rgba(0, 0, 0, 0.129),
+            0px 0px 109px rgba(0, 0, 0, 0.18);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            justify-items: center;
+            align-items: center;
+            height: 100vh;
+            gap: 10px;
+            padding-top: 80px; /* This accounts for the header height */
+        }
+
+        .add-card-button {
+            position: fixed;
+            top: 60px; /* This positions the button below the header */
+            right: 20px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .go-back-button {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .date {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .card-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .card-controls button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <div class="header">App Note #2</div>
+
+    <button class="add-card-button" onclick="window.location.href='/add_card'">Add Card</button>
+
+    <button class="go-back-button" onclick="window.location.href='/'">Go Back</button>
+
+    <div class="wrapper">
+        {% for card in cards %}
+        <div class="card">
+            <h1>{{ card.title }}</h1>
+            <p>{{ card.description }}</p>
+            <p class="date">{{ card.created_date.strftime('%Y-%m-%d') }}</p>
+
+            <div class="card-controls">
+                <a href="{{ url_for('update_card', card_id=card.id) }}">
+                    <button>Update</button>
+                </a>
+                
+                
+                <form action="{{ url_for('delete_card', card_id=card.id) }}" method="post">
+                    <button type="submit">Delete Card</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
